@@ -1,0 +1,18 @@
+# templates/post-upgrade-job.yaml
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ include "ping.fullname" . }}-random-script"
+  labels:
+    app.kubernetes.io/name: {{ include "ping.name" . }}
+    helm.sh/hook: post-upgrade
+    helm.sh/hook-weight: "1"
+spec:
+  template:
+    spec:
+      containers:
+        - name: random-script
+          image: your-script-image:latest # Replace with your actual script image
+          command: ["/bin/sh", "-c", "your-random-script.sh"]
+      restartPolicy: OnFailure
